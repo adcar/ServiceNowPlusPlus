@@ -1,15 +1,15 @@
 // ==UserScript==
 // @name         ServiceNow++
 // @namespace    http://tampermonkey.net/
-// @version      0.4.0
+// @version      0.4.1
 // @description  Adds some extra features to ServiceNow that make my life much easier
 // @author       Alexander Cardosi
 // @match        https://globalfoundries.service-now.com/*
 // ==/UserScript==
 
 /**
-Special cases. Will be highlighted in yellow.
-@type {(string|Array)}
+* Special cases. Will be highlighted in yellow.
+* @type {(string|Array)}
 */
 const specialCases = ["TASK0852576", "TASK0843305", "TASK0848093"];
 
@@ -22,7 +22,7 @@ document.addEventListener("keypress", (e) => {
 })
 
 /**
-* The main function.
+* The main function. Colorizes rows and shortens descriptions.
 */
 function main() {
     console.log("[ServiceNow++] Runnning Script...");
@@ -76,7 +76,7 @@ function getDescriptions(rows) {
 
 /**
 * Sets each description in the array to their respective columns. The array has to be the same length as the number of rows
-* @param {(string|Array)} descriptions - array of descriptions
+* @param {(string|Array)} descriptions - Array of descriptions
 * @param {HTMLElement} rows - HTML element of the rows
 * @throws Will through an error if the length of descriptions does not match that of rows
 */
@@ -90,7 +90,7 @@ function setDescriptions(descriptions, rows) {
 /**
 * Gets the device name from a description.
 * @param {string} description
-* @return string} line containing device name, or null if not found
+* @return {string} Line containing device name, or null if not found
 */
 function getDevName(description) {
     return getFromRegex(description, "(Computer Model|Hardware options)(.*)");
@@ -99,7 +99,7 @@ function getDevName(description) {
 /**
 * Gets the "requested user" name from a description.
 * @param {string} description
-* @return {string} line containing user name, or null if not found
+* @return {string} Line containing user name, or null if not found
 */
 function getUserName(description) {
     return getFromRegex(description, "(Open request for this user)(.*)");
@@ -109,7 +109,7 @@ function getUserName(description) {
 * Gets a result from a regex. Returns null if no match found
 * @param {string} string - The string that the regex will perform a match on
 * @param {string} regex - Pattern that you want to test for
-* @return {string} line containing regex, or null if not found
+* @return {string} Line containing regex, or null if not found
 */
 function getFromRegex(string, regex) {
     const result = string.match(regex);
