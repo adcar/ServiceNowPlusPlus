@@ -1,2 +1,2 @@
-# ServiceNow++ [![Latest Documentation](https://doxdox.org/images/badge-flat.svg)](https://doxdox.org/<username>/<repo>)
+# ServiceNow++ [![Latest Documentation](https://doxdox.org/images/badge-flat.svg)](https://doxdox.org/adcar/ServiceNowPlusPlus)
 Adds a bunch of improvements to ServiceNow.
