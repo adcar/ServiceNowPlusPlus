@@ -7,7 +7,9 @@
 // @match        https://globalfoundries.service-now.com/*
 // ==/UserScript==
 
-/** Special cases. Will be highlighted in yellow. */
+/**
+@type {(string|Array)} Special cases. Will be highlighted in yellow.
+*/
 const specialCases = ["TASK0852576", "TASK0843305", "TASK0848093"];
 
 
