@@ -8,7 +8,8 @@
 // ==/UserScript==
 
 /**
-@type {(string|Array)} Special cases. Will be highlighted in yellow.
+Special cases. Will be highlighted in yellow.
+@type {(string|Array)}
 */
 const specialCases = ["TASK0852576", "TASK0843305", "TASK0848093"];
 
