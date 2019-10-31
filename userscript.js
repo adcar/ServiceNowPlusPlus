@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ServiceNow++
 // @namespace    http://tampermonkey.net/
-// @version      0.5.0
+// @version      0.5.1
 // @description  Adds some extra features to ServiceNow that make my life much easier
 // @author       Alexander Cardosi
 // @match        https://globalfoundries.service-now.com/*
@@ -22,7 +22,7 @@ document.addEventListener("keypress", (e) => {
 })
 
 /**
-* The main function. Colorizes rows and shortens descriptions.
+* The main function. Colorizes rows, shortens descriptions, and adds buttons.
 */
 function main() {
     console.log("[ServiceNow++] Runnning Script...");
