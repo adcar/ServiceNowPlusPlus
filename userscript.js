@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ServiceNow++
 // @namespace    http://tampermonkey.net/
-// @version      0.5.1
+// @version      0.5.2
 // @description  Adds some extra features to ServiceNow that make my life much easier
 // @author       Alexander Cardosi
 // @match        https://globalfoundries.service-now.com/*
@@ -96,7 +96,7 @@ function appendNameBtn(row, column = 11) {
 /**
 * Copies an email message to the clipboard containing details like device name and the user's first name.
 * @param {string} devName - device name that is returned by getDeviceName()
-* @param {string} devName - user name that is returned by getUserName()
+* @param {string} userName - user name that is returned by getUserName()
 */
 async function copyEmailToClipboard(devName, userName) {
     let device = devName.match(/(Computer Model\/Type —— |Hardware options —— )(.*)\s-/)[2];
