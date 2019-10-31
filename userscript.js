@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ServiceNow++
 // @namespace    http://tampermonkey.net/
-// @version      0.4.1
+// @version      0.5.0
 // @description  Adds some extra features to ServiceNow that make my life much easier
 // @author       Alexander Cardosi
 // @match        https://globalfoundries.service-now.com/*
@@ -32,15 +32,90 @@ function main() {
         const devName = getDevName(desc);
         const userName = getUserName(desc);
         if (userName !== null && devName !== null) {
-            return `${devName} \n \n ${userName}`;
+            return `${devName} \n \n ${userName} \n`;
         } else {
-            return desc;
+            return desc + "\n";
         }
     });
     rows.forEach(row => {
         setColor(row);
     });
     setDescriptions(newDescs, rows);
+
+    // Add btns
+    rows.forEach(row => {
+        appendEmailBtn(row);
+        appendTaskBtn(row);
+        appendNameBtn(row);
+    })
+}
+
+/**
+* Appends a copy email button that runs copyEmailToClipboard when clicked.
+* @param {HTMLElement} row - The HTML row element found in ServiceNow
+* @param {number} column - The column number where descriptions are located. Defaults to 3.
+*/
+function appendEmailBtn(row, column = 3) {
+    const desc = getDescription(row);
+    const devName = getDevName(desc);
+    const userName = getUserName(desc)
+    const emailBtn = document.createElement("button");
+    emailBtn.innerHTML = "Copy Email Message";
+    emailBtn.addEventListener("click", () => {copyEmailToClipboard(devName, userName)});
+    row.children[column].appendChild(emailBtn);
+}
+
+/**
+* Appends a copy task button that copies task number
+* @param {HTMLElement} row - The HTML row element found in ServiceNow
+* @param {number} column - The column number where task numbers are located. Defaults to 2.
+*/
+function appendTaskBtn(row, column = 2) {
+    const copyTaskBtn = document.createElement("button");
+    copyTaskBtn.innerHTML = "Copy";
+    copyTaskBtn.addEventListener("click", async () => {await navigator.clipboard.writeText(row.children[column].children[0].innerText)});
+    row.children[column].appendChild(copyTaskBtn);
+}
+
+/**
+* Appends a copy name button that copies the first and last name in order without the comma
+* @param {HTMLElement} row - The HTML row element found in ServiceNow
+* @param {number} column - The column number where "Opened By" names are located. Defaults to 11.
+*/
+function appendNameBtn(row, column = 11) {
+    const copyNameBtn = document.createElement("button");
+    copyNameBtn.innerHTML = "Copy";
+
+    // 1st index = last name, 2nd index = first name
+    const name = row.children[column].children[0].innerText.match(/(\w+),\s(\w+)/);
+
+    copyNameBtn.addEventListener("click", async () => {await navigator.clipboard.writeText(`${name[2]} ${name[1]}`)})
+    row.children[column].appendChild(copyNameBtn);
+}
+
+/**
+* Copies an email message to the clipboard containing details like device name and the user's first name.
+* @param {string} devName - device name that is returned by getDeviceName()
+* @param {string} devName - user name that is returned by getUserName()
+*/
+async function copyEmailToClipboard(devName, userName) {
+    let device = devName.match(/(Computer Model\/Type —— |Hardware options —— )(.*)\s-/)[2];
+    const firstName = userName.match(/(Open request for this user —— \w+,\s)(\w+)/)[2];
+
+    if (device == "HP Standard") {
+        device = "HP ProBook"
+    }
+    if (device == "HP Developer") {
+        device = "HP ZBook"
+    }
+
+    const msg = `Hi ${firstName},
+
+You can pick up your ${device} at the IT workbench in 966-2 L11 M-F 9am-1pm.
+
+Please let me know when you get it so I can close this task.
+Thanks,`
+    await navigator.clipboard.writeText(msg);
 }
 
 /**
@@ -72,6 +147,16 @@ function getDescriptions(rows) {
     return _rows.map(row => {
         return row.children[3].getAttribute("data-original-title");
     })
+}
+
+
+/**
+* Returns the description from a row
+* @param {HTMLElement} row - HTML row element
+* @return {string} string containing descriptions
+*/
+function getDescription(row) {
+    return row.children[3].getAttribute("data-original-title");
 }
 
 /**
